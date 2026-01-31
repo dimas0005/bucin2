@@ -60,7 +60,7 @@ setInterval(() => {
     });
 }, 5000);
 
-// ================== PARTICLES CLICK ==================
+// ================== PARTICLES ==================
 let particles = [];
 canvas.addEventListener("click", e => {
     for (let i = 0; i < 25; i++) {
@@ -74,7 +74,6 @@ canvas.addEventListener("click", e => {
     }
 });
 
-// mobile fix
 canvas.addEventListener("touchstart", e => {
     e.preventDefault();
     canvas.click();
@@ -84,15 +83,14 @@ canvas.addEventListener("touchstart", e => {
 function animate() {
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    // stars
     stars.forEach((s,i)=>{
-        ctx.fillStyle = "white";
-        ctx.fillRect(s.x, s.y, 1.5, 1.5);
+        ctx.fillStyle="white";
+        ctx.fillRect(s.x,s.y,1.5,1.5);
 
         for(let j=i+1;j<stars.length;j++){
-            let d = Math.hypot(s.x-stars[j].x, s.y-stars[j].y);
-            if(d < 120){
-                ctx.strokeStyle = "rgba(255,255,255,0.08)";
+            let d=Math.hypot(s.x-stars[j].x,s.y-stars[j].y);
+            if(d<120){
+                ctx.strokeStyle="rgba(255,255,255,0.08)";
                 ctx.beginPath();
                 ctx.moveTo(s.x,s.y);
                 ctx.lineTo(stars[j].x,stars[j].y);
@@ -100,19 +98,16 @@ function animate() {
             }
         }
 
-        s.x += s.dx;
-        s.y += s.dy;
+        s.x+=s.dx; s.y+=s.dy;
         if(s.x<0||s.x>canvas.width) s.dx*=-1;
         if(s.y<0||s.y>canvas.height) s.dy*=-1;
     });
 
-    // heart constellation
     heart.forEach((p,i)=>{
         ctx.fillStyle="#7aa2ff";
         ctx.beginPath();
         ctx.arc(p.x,p.y,2,0,Math.PI*2);
         ctx.fill();
-
         if(i>0){
             ctx.strokeStyle="rgba(122,162,255,0.35)";
             ctx.beginPath();
@@ -122,18 +117,16 @@ function animate() {
         }
     });
 
-    // floating hearts
     floatingHearts.forEach((h,i)=>{
         ctx.fillStyle=`rgba(255,150,200,${h.alpha})`;
         ctx.beginPath();
         ctx.arc(h.x,h.y,h.size,0,Math.PI*2);
         ctx.fill();
-        h.y -= h.speed;
-        h.alpha -= 0.002;
+        h.y-=h.speed;
+        h.alpha-=0.002;
         if(h.alpha<=0) floatingHearts.splice(i,1);
     });
 
-    // shooting stars
     shootingStars.forEach((s,i)=>{
         ctx.strokeStyle="rgba(255,255,255,0.8)";
         ctx.beginPath();
@@ -144,7 +137,6 @@ function animate() {
         if(s.life<=0) shootingStars.splice(i,1);
     });
 
-    // click particles
     particles.forEach((p,i)=>{
         ctx.fillStyle="white";
         ctx.fillRect(p.x,p.y,2,2);
@@ -156,37 +148,48 @@ function animate() {
 }
 animate();
 
-// ================== TEXT ==================
+// ================== TEXT (HALUS, NO KEDIP) ==================
 const messages = [
-    "Hi my love 💙",
-    "I made this just for you",
-    "No matter the distance",
-    "You are always in my heart ❤️",
-    "Love You Always ✨"
+    "Halloo elek 💙",
+    "Mungkin kita sama-sama capek, sama-sama keras kepala",
+    "Aku ingin kita pelan-pelan belajar memahami, bukan saling menjauh",
+    "perasaanku ke kamu nggak berubah.",
+    "Kalau kamu mau, ayo kita benahi bersama.❤️",
+    "Aku masih di sini, dan aku masih ingin kamu. ✨"
 ];
 
 let index = 0;
 let typing = false;
+let charIndex = 0;
+let currentText = "";
 
-function typeText(text, i=0){
+function startTyping(text) {
     typing = true;
+    charIndex = 0;
+    currentText = text;
+    textEl.innerText = "";
     textEl.style.opacity = 0;
 
-    setTimeout(()=>{
+    setTimeout(() => {
         textEl.style.opacity = 1;
-        if(i <= text.length){
-            textEl.innerText = text.slice(0,i);
-            setTimeout(()=>typeText(text,i+1),60);
-        } else {
-            typing = false;
-        }
-    },150);
+        typeLoop();
+    }, 250);
 }
 
-// tap anywhere
-canvas.addEventListener("click", ()=>{
-    if(typing) return;
-    if(music.paused) music.play();
-    typeText(messages[index]);
-    if(index < messages.length-1) index++;
+function typeLoop() {
+    if (charIndex <= currentText.length) {
+        textEl.innerText = currentText.slice(0, charIndex);
+        charIndex++;
+        setTimeout(typeLoop, 55);
+    } else {
+        typing = false;
+    }
+}
+
+canvas.addEventListener("click", () => {
+    if (typing) return;
+    if (music.paused) music.play();
+
+    startTyping(messages[index]);
+    if (index < messages.length - 1) index++;
 });
