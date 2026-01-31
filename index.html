@@ -2,139 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Love Project 💙</title>
+<title>For My Love ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-html, body {
-    margin: 0;
-    padding: 0;
-    background: black;
-    overflow: hidden;
-    font-family: 'Poppins', sans-serif;
-}
-
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
-#textBox {
-    position: absolute;
-    width: 100%;
-    top: 40%;
-    text-align: center;
-    font-size: 2.5rem;
-    color: #a5c9ff;
-    text-shadow: 0 0 15px #7aa2ff;
-}
-
-button {
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 12px 30px;
-    background: transparent;
-    color: white;
-    border: 1px solid white;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-button:hover {
-    background: white;
-    color: black;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <canvas id="canvas"></canvas>
-<div id="textBox"></div>
-<button id="btn">Click Me Baby 💙</button>
+
+<div id="ui">
+  <div id="text"></div>
+  <button id="btn">Click Me Baby 💙</button>
+</div>
 
 <audio id="music" src="music.mp3" loop></audio>
 
-<script>
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-canvas.width = innerWidth;
-canvas.height = innerHeight;
-
-// ⭐ Background stars
-let stars = [];
-for (let i = 0; i < 120; i++) {
-    stars.push({
-        x: Math.random()*canvas.width,
-        y: Math.random()*canvas.height,
-        dx:(Math.random()-0.5)*0.2,
-        dy:(Math.random()-0.5)*0.2
-    });
-}
-
-// ❤️ Heart constellation
-let heart = [];
-for (let t = 0; t < Math.PI*2; t += 0.2) {
-    let x = 16 * Math.pow(Math.sin(t),3);
-    let y = 13 * Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
-    heart.push({
-        x: canvas.width/2 + x*15,
-        y: canvas.height/2 - y*15
-    });
-}
-
-// ✨ Draw
-function animate() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    stars.forEach(s=>{
-        ctx.fillStyle="white";
-        ctx.fillRect(s.x,s.y,1.5,1.5);
-        s.x+=s.dx; s.y+=s.dy;
-    });
-
-    heart.forEach((p,i)=>{
-        ctx.fillStyle="#7aa2ff";
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,2,0,Math.PI*2);
-        ctx.fill();
-        if(i>0){
-            ctx.strokeStyle="rgba(122,162,255,0.3)";
-            ctx.beginPath();
-            ctx.moveTo(heart[i-1].x,heart[i-1].y);
-            ctx.lineTo(p.x,p.y);
-            ctx.stroke();
-        }
-    });
-
-    requestAnimationFrame(animate);
-}
-animate();
-
-// 📝 Typing text
-const messages = [
-    "Hi, my love 💙",
-    "I just want you to know...",
-    "No matter what happens",
-    "I will always love you ✨"
-];
-let msgIndex = 0;
-
-function typeText(text, i=0) {
-    if(i<=text.length){
-        document.getElementById("textBox").innerText = text.slice(0,i);
-        setTimeout(()=>typeText(text,i+1),60);
-    }
-}
-
-document.getElementById("btn").onclick = ()=>{
-    document.getElementById("music").play();
-    typeText(messages[msgIndex]);
-    msgIndex = (msgIndex + 1) % messages.length;
-};
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
