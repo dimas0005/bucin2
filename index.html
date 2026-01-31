@@ -1,1 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Love You Always ✨</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
+        font-family: 'Poppins', sans-serif;
+        color: white;
+    }
 
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    .center-text {
+        position: absolute;
+        top: 45%;
+        width: 100%;
+        text-align: center;
+        font-size: 3rem;
+        opacity: 0;
+        transition: opacity 2s ease;
+        color: #a5c9ff;
+        text-shadow: 0 0 15px #7aa2ff;
+    }
+
+    .btn {
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 28px;
+        border-radius: 30px;
+        border: 1px solid white;
+        background: transparent;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn:hover {
+        background: white;
+        color: black;
+    }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="center-text" id="loveText">Love You Always</div>
+<button class="btn" id="btn">Click Me Baby</button>
+
+<script>
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+
+for (let i = 0; i < 150; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.5 + 0.5,
+        dx: (Math.random() - 0.5) * 0.2,
+        dy: (Math.random() - 0.5) * 0.2
+    });
+}
+
+function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < stars.length; i++) {
+        let s = stars[i];
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = "white";
+        ctx.fill();
+
+        for (let j = i + 1; j < stars.length; j++) {
+            let s2 = stars[j];
+            let dist = Math.hypot(s.x - s2.x, s.y - s2.y);
+            if (dist < 120) {
+                ctx.strokeStyle = "rgba(255,255,255,0.1)";
+                ctx.beginPath();
+                ctx.moveTo(s.x, s.y);
+                ctx.lineTo(s2.x, s2.y);
+                ctx.stroke();
+            }
+        }
+
+        s.x += s.dx;
+        s.y += s.dy;
+
+        if (s.x < 0 || s.x > canvas.width) s.dx *= -1;
+        if (s.y < 0 || s.y > canvas.height) s.dy *= -1;
+    }
+
+    requestAnimationFrame(drawStars);
+}
+
+drawStars();
+
+document.getElementById("btn").onclick = () => {
+    document.getElementById("loveText").style.opacity = 1;
+};
+</script>
+
+</body>
+</html>
