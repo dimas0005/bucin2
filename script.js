@@ -158,11 +158,15 @@ animate();
 
 // ================== TEXT ==================
 const messages = [
-    "Hi my love 💙",
-    "I made this just for you",
-    "No matter the distance",
-    "You are always in my heart ❤️",
-    "Love You Always ✨"
+    "Halloo elek 💙",
+    "Aku tau kamu pasti masih marah",
+    "Aku diam, bukan karena nggak peduli.",
+    "Aku cuma nggak mau tambah parah",
+    "Perasaanku ke kamu nggak berubah.",
+    "Kalau kamu butuh aku, aku selalu ada.",
+    "Aku masih memilih kamu, hari ini dan seterusnya.",
+    "Kalau kamu mau memulai lagi, aku siap.,
+    "❤️You are always in my heart ❤️",
 ];
 
 let index = 0;
