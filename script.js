@@ -166,7 +166,7 @@ const messages = [
     "Kalau kamu butuh aku, aku selalu ada.",
     "Aku masih memilih kamu, hari ini dan seterusnya.",
     "Kalau kamu mau memulai lagi, aku siap.,
-    "❤️You are always in my heart ❤️",
+    "❤️You are always in my heart ❤️"
 ];
 
 let index = 0;
