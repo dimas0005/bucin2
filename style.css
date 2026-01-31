@@ -14,10 +14,10 @@ html, body {
 
 canvas {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
 }
 
+/* UI */
 #ui {
     position: absolute;
     width: 100%;
@@ -29,13 +29,29 @@ canvas {
 #text {
     font-size: 2.4rem;
     color: #a5c9ff;
-    text-shadow: 0 0 18px #7aa2ff;
     min-height: 70px;
+    animation: glow 3s ease-in-out infinite alternate;
 }
 
 #hint {
-    margin-top: 20px;
+    margin-top: 18px;
     font-size: 0.85rem;
     opacity: 0.6;
-    letter-spacing: 1px;
+}
+
+/* glow animation */
+@keyframes glow {
+    from { text-shadow: 0 0 10px #7aa2ff; }
+    to   { text-shadow: 0 0 25px #b3c7ff; }
+}
+
+/* vignette */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle,
+        rgba(0,0,0,0) 40%,
+        rgba(0,0,0,0.65) 100%);
 }
