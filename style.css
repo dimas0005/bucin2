@@ -9,49 +9,25 @@ html, body {
     height: 100%;
     background: black;
     overflow: hidden;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 canvas {
     position: fixed;
-    inset: 0;
-}
-
-/* UI */
-#ui {
-    position: absolute;
-    width: 100%;
-    top: 40%;
-    text-align: center;
-    pointer-events: none;
+    top: 0;
+    left: 0;
 }
 
 #text {
-    font-size: 2.4rem;
-    color: #a5c9ff;
-    min-height: 70px;
-    animation: glow 3s ease-in-out infinite alternate;
-}
-
-#hint {
-    margin-top: 18px;
-    font-size: 0.85rem;
-    opacity: 0.6;
-}
-
-/* glow animation */
-@keyframes glow {
-    from { text-shadow: 0 0 10px #7aa2ff; }
-    to   { text-shadow: 0 0 25px #b3c7ff; }
-}
-
-/* vignette */
-body::after {
-    content: "";
     position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(circle,
-        rgba(0,0,0,0) 40%,
-        rgba(0,0,0,0.65) 100%);
+    bottom: 15%;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 24px;
+    letter-spacing: 1px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    text-shadow: 0 0 10px rgba(255,255,255,0.6);
+    padding: 0 20px;
 }
