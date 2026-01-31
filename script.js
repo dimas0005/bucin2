@@ -140,3 +140,7 @@ canvas.addEventListener("click", () => {
 
     if (index >= messages.length) index = messages.length - 1;
 });
+canvas.addEventListener("touchstart", (e) => {
+    e.preventDefault();   // penting untuk HP
+    canvas.click();
+});
