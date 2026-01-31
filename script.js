@@ -130,13 +130,13 @@ function typeText(text, i = 0) {
     }
 }
 
-// 👉 CLICK ANYWHERE
-document.addEventListener("click", () => {
+canvas.addEventListener("click", () => {
     if (typing) return;
 
     if (music.paused) music.play();
 
     typeText(messages[index]);
     index++;
-    if (index >= messages.length) index = 0;
+
+    if (index >= messages.length) index = messages.length - 1;
 });
