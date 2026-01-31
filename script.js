@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 const textEl = document.getElementById("text");
 const music = document.getElementById("music");
 
+// ================== RESIZE ==================
 function resize() {
     canvas.width = innerWidth;
     canvas.height = innerHeight;
@@ -60,7 +61,7 @@ setInterval(() => {
     });
 }, 5000);
 
-// ================== PARTICLES CLICK ==================
+// ================== CLICK PARTICLES ==================
 let particles = [];
 canvas.addEventListener("click", e => {
     for (let i = 0; i < 25; i++) {
@@ -77,10 +78,14 @@ canvas.addEventListener("click", e => {
 // mobile fix
 canvas.addEventListener("touchstart", e => {
     e.preventDefault();
-    canvas.click();
+    const t = e.touches[0];
+    canvas.dispatchEvent(new MouseEvent("click", {
+        clientX: t.clientX,
+        clientY: t.clientY
+    }));
 });
 
-// ================== DRAW ==================
+// ================== ANIMATION ==================
 function animate() {
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
@@ -144,7 +149,7 @@ function animate() {
         if(s.life<=0) shootingStars.splice(i,1);
     });
 
-    // click particles
+    // particles
     particles.forEach((p,i)=>{
         ctx.fillStyle="white";
         ctx.fillRect(p.x,p.y,2,2);
@@ -165,8 +170,8 @@ const messages = [
     "Perasaanku ke kamu nggak berubah.",
     "Kalau kamu butuh aku, aku selalu ada.",
     "Aku masih memilih kamu, hari ini dan seterusnya.",
-    "Kalau kamu mau memulai lagi, aku siap.,
-    "❤️You are always in my heart ❤️"
+    "Kalau kamu mau memulai lagi, aku siap.",
+    "❤️ You are always in my heart ❤️"
 ];
 
 let index = 0;
