@@ -3,96 +3,67 @@ const ctx = canvas.getContext("2d");
 const textEl = document.getElementById("text");
 const music = document.getElementById("music");
 
-function resize() {
+function resize(){
     canvas.width = innerWidth;
     canvas.height = innerHeight;
 }
 resize();
 window.addEventListener("resize", resize);
 
-// ================== STARS ==================
+// ================= STARS =================
 let stars = [];
-for (let i = 0; i < 160; i++) {
+for(let i=0;i<150;i++){
     stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        dx: (Math.random() - 0.5) * 0.3,
-        dy: (Math.random() - 0.5) * 0.3
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        dx:(Math.random()-0.5)*0.3,
+        dy:(Math.random()-0.5)*0.3
     });
 }
 
-// ================== HEART CONSTELLATION ==================
-let heart = [];
-for (let t = 0; t < Math.PI * 2; t += 0.15) {
-    let x = 16 * Math.pow(Math.sin(t), 3);
-    let y = 13 * Math.cos(t)
-          - 5 * Math.cos(2 * t)
-          - 2 * Math.cos(3 * t)
-          - Math.cos(4 * t);
-
+// ================= HEART =================
+let heart=[];
+for(let t=0;t<Math.PI*2;t+=0.15){
+    let x=16*Math.pow(Math.sin(t),3);
+    let y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
     heart.push({
-        x: canvas.width / 2 + x * 15,
-        y: canvas.height / 2 - y * 15
+        x:canvas.width/2+x*15,
+        y:canvas.height/2-y*15
     });
 }
 
-// ================== FLOATING HEARTS ==================
-let floatingHearts = [];
-setInterval(() => {
-    floatingHearts.push({
-        x: Math.random() * canvas.width,
-        y: canvas.height + 20,
-        size: Math.random() * 6 + 4,
-        speed: Math.random() * 0.6 + 0.3,
-        alpha: 1
-    });
-}, 1200);
-
-// ================== SHOOTING STARS ==================
-let shootingStars = [];
-setInterval(() => {
-    shootingStars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height / 2,
-        dx: 8,
-        dy: 4,
-        life: 30
-    });
-}, 5000);
-
-// ================== PARTICLES CLICK ==================
-let particles = [];
-canvas.addEventListener("click", e => {
-    for (let i = 0; i < 25; i++) {
+// ================= CLICK PARTICLES =================
+let particles=[];
+canvas.addEventListener("click",e=>{
+    for(let i=0;i<20;i++){
         particles.push({
-            x: e.clientX,
-            y: e.clientY,
-            dx: (Math.random() - 0.5) * 4,
-            dy: (Math.random() - 0.5) * 4,
-            life: 40
+            x:e.clientX,
+            y:e.clientY,
+            dx:(Math.random()-0.5)*4,
+            dy:(Math.random()-0.5)*4,
+            life:40
         });
     }
 });
 
 // mobile fix
-canvas.addEventListener("touchstart", e => {
+canvas.addEventListener("touchstart",e=>{
     e.preventDefault();
     canvas.click();
 });
 
-// ================== DRAW ==================
-function animate() {
+// ================= DRAW =================
+function animate(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    // stars
     stars.forEach((s,i)=>{
-        ctx.fillStyle = "white";
-        ctx.fillRect(s.x, s.y, 1.5, 1.5);
+        ctx.fillStyle="white";
+        ctx.fillRect(s.x,s.y,1.5,1.5);
 
         for(let j=i+1;j<stars.length;j++){
-            let d = Math.hypot(s.x-stars[j].x, s.y-stars[j].y);
-            if(d < 120){
-                ctx.strokeStyle = "rgba(255,255,255,0.08)";
+            let d=Math.hypot(s.x-stars[j].x,s.y-stars[j].y);
+            if(d<120){
+                ctx.strokeStyle="rgba(255,255,255,0.08)";
                 ctx.beginPath();
                 ctx.moveTo(s.x,s.y);
                 ctx.lineTo(stars[j].x,stars[j].y);
@@ -100,19 +71,16 @@ function animate() {
             }
         }
 
-        s.x += s.dx;
-        s.y += s.dy;
+        s.x+=s.dx; s.y+=s.dy;
         if(s.x<0||s.x>canvas.width) s.dx*=-1;
         if(s.y<0||s.y>canvas.height) s.dy*=-1;
     });
 
-    // heart constellation
     heart.forEach((p,i)=>{
         ctx.fillStyle="#7aa2ff";
         ctx.beginPath();
         ctx.arc(p.x,p.y,2,0,Math.PI*2);
         ctx.fill();
-
         if(i>0){
             ctx.strokeStyle="rgba(122,162,255,0.35)";
             ctx.beginPath();
@@ -122,29 +90,6 @@ function animate() {
         }
     });
 
-    // floating hearts
-    floatingHearts.forEach((h,i)=>{
-        ctx.fillStyle=`rgba(255,150,200,${h.alpha})`;
-        ctx.beginPath();
-        ctx.arc(h.x,h.y,h.size,0,Math.PI*2);
-        ctx.fill();
-        h.y -= h.speed;
-        h.alpha -= 0.002;
-        if(h.alpha<=0) floatingHearts.splice(i,1);
-    });
-
-    // shooting stars
-    shootingStars.forEach((s,i)=>{
-        ctx.strokeStyle="rgba(255,255,255,0.8)";
-        ctx.beginPath();
-        ctx.moveTo(s.x,s.y);
-        ctx.lineTo(s.x-s.dx*2,s.y-s.dy*2);
-        ctx.stroke();
-        s.x+=s.dx; s.y+=s.dy; s.life--;
-        if(s.life<=0) shootingStars.splice(i,1);
-    });
-
-    // click particles
     particles.forEach((p,i)=>{
         ctx.fillStyle="white";
         ctx.fillRect(p.x,p.y,2,2);
@@ -156,8 +101,8 @@ function animate() {
 }
 animate();
 
-// ================== TEXT ==================
-const messages = [
+// ================= TEXT LOGIC (FIX) =================
+const messages=[
     "Hi my love 💙",
     "I made this just for you",
     "No matter the distance",
@@ -165,28 +110,36 @@ const messages = [
     "Love You Always ✨"
 ];
 
-let index = 0;
-let typing = false;
+let index=0;
+let typing=false;
 
-function typeText(text, i=0){
-    typing = true;
-    textEl.style.opacity = 0;
+function typeText(text){
+    typing=true;
+    textEl.innerText="";
+    let i=0;
 
-    setTimeout(()=>{
-        textEl.style.opacity = 1;
-        if(i <= text.length){
-            textEl.innerText = text.slice(0,i);
-            setTimeout(()=>typeText(text,i+1),60);
-        } else {
-            typing = false;
+    function typingLoop(){
+        if(i<text.length){
+            textEl.innerText+=text.charAt(i);
+            i++;
+            setTimeout(typingLoop,60);
+        }else{
+            typing=false;
         }
-    },150);
+    }
+    typingLoop();
 }
 
 // tap anywhere
-canvas.addEventListener("click", ()=>{
+canvas.addEventListener("click",()=>{
     if(typing) return;
+
     if(music.paused) music.play();
-    typeText(messages[index]);
-    if(index < messages.length-1) index++;
+
+    textEl.style.opacity=0;
+    setTimeout(()=>{
+        textEl.style.opacity=1;
+        typeText(messages[index]);
+        if(index<messages.length-1) index++;
+    },400);
 });
